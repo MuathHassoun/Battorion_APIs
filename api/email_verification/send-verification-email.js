@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     }
   });
 
-  const verificationLink = `https://your-domain.com/api/verify-email?token=${data.verification_token}&email=${email}`;
+  const verificationLink = `https://battorion-ap-is.vercel.app/api/verify-email?token=${data.verification_token}&email=${email}`;
 
   try {
     await transporter.sendMail({
