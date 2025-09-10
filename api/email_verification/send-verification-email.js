@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     }
   });
 
-  const verificationLink = `https://battorion-ap-is.vercel.app/api/verify-email?token=${data.verification_token}&email=${email}`;
+  const verificationLink = `https://battorion-ap-is.vercel.app/api/email_verification/verify-email?token=${data.verification_token}&email=${email}`;
 
   try {
     await transporter.sendMail({
