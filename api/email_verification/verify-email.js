@@ -21,7 +21,6 @@ export default async function handler(req, res) {
     .update({ is_verified: true, verification_token: null, token_expires_at: null })
     .eq('user_email', email);
 
-  if (updateError) return res.status(500).send('Failed to update verification status');
-
-  return res.status(200).send('Email verified successfully!');
+  if (updateError) return res.redirect('./public/html/error.html');
+  return res.redirect('./public/html/success.html');
 }
