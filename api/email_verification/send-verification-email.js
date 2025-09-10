@@ -1,17 +1,31 @@
 import nodemailer from 'nodemailer';
 import { supabase } from '../../lib/supabase';
+import { randomUUID } from 'crypto';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
   const { email } = req.body;
 
-  const { data, error } = await supabase
+  let { data, error } = await supabase
     .from('chat_users')
     .select('verification_token')
     .eq('user_email', email)
     .single();
 
-  if (error || !data) return res.status(404).json({ message: 'No token found for this email' });
+  if (error || !data) {
+    const newToken = randomUUID();
+
+    const { data: inserted, error: insertError } = await supabase
+      .from('chat_users')
+      .insert([{ user_email: email, verification_token: newToken }])
+      .select('verification_token')
+      .single();
+
+    if (insertError) {
+      return res.status(500).json({ message: 'Failed to insert new user', error: insertError });
+    }
+    data = inserted;
+  }
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
