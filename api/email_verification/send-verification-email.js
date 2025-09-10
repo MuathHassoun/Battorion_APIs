@@ -31,7 +31,8 @@ export default async function handler(req, res) {
       text: `Hello,
       We received a request to submit feedback using this email address.
 
-      Before we can process your feedback, please verify your email by clicking the link below:
+      Before we can process your feedback, please verify your email by clicking the link below.
+      Your feedback will not be submitted until your email is verified.
 
       ${verificationLink}
 
@@ -45,6 +46,7 @@ export default async function handler(req, res) {
         <p>Hello,</p>
         <p>We received a request to submit feedback from this email address.
         Before we can process your feedback, please confirm that this email belongs to you by clicking the button below:</p>
+        <p><strong>Note:</strong> Your feedback will not be submitted until your email is verified.</p>
         <p style="text-align:center; margin:30px 0;">
           <a href="${verificationLink}" style="background:#4CAF50; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; display:inline-block;">
             Verify Email
