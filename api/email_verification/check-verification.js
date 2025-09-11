@@ -33,5 +33,5 @@ export default async function handler(req, res) {
       verified: 0
     });
   }
-  return res.status(200).json({ verified: data.is_verified ? 1 : 0 });
+  return res.status(200).json({ verified: user.is_verified ? 1 : 0 });
 }
