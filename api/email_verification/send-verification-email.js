@@ -4,7 +4,7 @@ import { randomUUID } from 'crypto';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
-  const { email } = req.body;
+  const { email, id } = req.body;
 
   let { data, error } = await supabase
     .from('chat_users')
@@ -14,7 +14,6 @@ export default async function handler(req, res) {
 
   if (error || !data) {
     const newToken = randomUUID();
-
     const { data: inserted, error: insertError } = await supabase
       .from('chat_users')
       .insert([{ user_email: email, verification_token: newToken }])
@@ -35,8 +34,7 @@ export default async function handler(req, res) {
     }
   });
 
-  const verificationLink = `https://battorion-ap-is.vercel.app/api/email_verification/verify-email?token=${data.verification_token}&email=${email}`;
-
+  const verificationLink = `https://battorion-ap-is.vercel.app/api/email_verification/verify-email?id=${id}&token=${data.verification_token}&email=${email}`;
   try {
     await transporter.sendMail({
       from: `"Battorion Support" <${process.env.EMAIL_USER}>`,
