@@ -15,8 +15,8 @@ export default async function handler(req, res) {
     .eq('verification_token', token)
     .single();
 
-  if (error || !data) return res.status(404).send('/html/error.html');
-  if (new Date(data.token_expires_at) < new Date()) return res.status(410).send('/html/error.html');
+  if (error || !data) return res.status(404).redirect('/html/error.html');
+  if (new Date(data.token_expires_at) < new Date()) return res.status(410).redirect('/html/error.html');
 
   const { error: updateError } = await supabase
     .from('chat_users')
