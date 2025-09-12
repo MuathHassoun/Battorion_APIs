@@ -12,10 +12,15 @@ export default async function handler(req, res) {
 
   const { error } = await supabase
     .from('chat_users')
-    .update({ verification_token: token, token_expires_at: expiresAt })
-    .eq('user_email', email);
+    .upsert(
+      {
+        user_email: email,
+        verification_token: token,
+        token_expires_at: expiresAt,
+      },
+      { onConflict: 'user_email' }
+    );
 
   if (error) return res.status(500).json({ error: error.message });
-
-  return res.status(200).json({ message: 'Token generated successfully' });
+  return res.status(200).json({ message: 'Token generated successfully', token });
 }
