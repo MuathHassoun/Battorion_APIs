@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
   const { error: updateError } = await supabase
     .from('chat_users')
-    .update({ is_web_verified: null })
+    .update({ is_web_verified: false })
     .eq('user_email', email)
 
   if (updateError) return res.status(500).json({ error: 'Update error', details: updateError.message });

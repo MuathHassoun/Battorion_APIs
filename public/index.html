@@ -13,36 +13,38 @@
   <link rel="manifest" href="../site.webmanifest">
 </head>
 <body>
-  <div class="container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail Icon" class="gmail-icon">
-    <div class="spinner"></div>
+  <section class="main-container">
+    <section class="container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Gmail Icon" class="gmail-icon">
+      <div class="spinner"></div>
 
-    <h1>Verify Your Email</h1>
-    <h3 id="email_address"></h3>
-    <br>
-    <p>
-      We've sent a verification link to your email address.<br>
-      Please check your Gmail inbox and click the link to continue.
-    </p>
-    <p>
-      Note: It may take a few minutes for the email to arrive.
-    </p>
+      <h1>Verify Your Email</h1>
+      <h3 id="email_address"></h3>
+      <br>
+      <p>
+        We've sent a verification link to your email address.<br>
+        Please check your Gmail inbox and click the link to continue.
+      </p>
+      <p>
+        To complete verification, click <strong style="color:#6c5ce7;">Open Gmail</strong>.
+      </p>
 
-    <section id="actions">
-      <a href="https://mail.google.com" target="_blank" class="btn">
-        Open Gmail
-      </a>
-      <button onclick="resendEmail()" class="btn">
-        Resend Email
-      </button>
+      <section id="actions">
+        <a href="https://mail.google.com" target="_blank" class="btn">Open Gmail</a>
+        <button onclick="resendEmail()" class="btn">Resend Email</button>
+        <button onclick="checkVerifyEmail()" class="btn">Check Verify</button>
+      </section>
     </section>
-    <br>
-    <section>
-      <button onclick="checkVerifyEmail()" class="btn">
-        Check Verify
-      </button>
+    <section class="container">
+      <h1>Notes</h1>
+      <ul style="list-style: disc; margin: 0 auto; max-width: 420px; text-align: left; padding-left: 20px; color: #666;">
+        <li>The verification email may take a few minutes to arrive.</li>
+        <li>If it takes too long, click <strong style="color:#6c5ce7;">Resend Email</strong>.</li>
+        <li>If you have already verified your email but nothing happens, click <strong style="color:#6c5ce7;">Check Verify</strong>.</li>
+      </ul>
     </section>
-  </div>
+  </section>
+
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const email = urlParams.get('email');
