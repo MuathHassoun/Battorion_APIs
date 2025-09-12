@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("load", async () => {
   const emailElement = document.getElementById("email_address");
   const email = emailElement.value;
   if (!isValidEmail(email)) {
