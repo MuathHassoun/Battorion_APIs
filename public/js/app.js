@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const email = document.getElementById("email_address");
+  const emailElement = document.getElementById("email_address");
+  const email = emailElement.value;
   if (!isValidEmail(email)) {
     window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
     return;
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (res.status === 200) {
-        await import('/public/js/channel.js');
+        await import('channel.js');
       } else {
         window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
       }
