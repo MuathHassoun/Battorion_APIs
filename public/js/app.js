@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (sendRes.status === 200) {
+        alert("Message 0");
         const channel = supabase
           .channel('verification-channel')
           .on(
