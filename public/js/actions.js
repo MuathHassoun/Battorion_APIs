@@ -1,9 +1,12 @@
 async function resendEmail() {
+  const params = new URLSearchParams(window.location.search);
+  let email = params.get("email");
   let errorMessage = "";
+
   const tokenRes = await fetch('/api/email_verification/generate-token', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({email})
+    body: JSON.stringify({email: email, response: "Website"})
   });
 
   if (tokenRes.status !== 200) {

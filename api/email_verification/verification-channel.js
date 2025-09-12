@@ -16,8 +16,6 @@ export default async function handler(req, res) {
     .eq('user_email', email)
     .single();
 
-  if (error) {
-    return res.status(500).json({ error: 'Database error', details: error.message });
-  }
+  if (error) return res.status(500).json({ error: 'Database error', details: error.message });
   return res.status(200).json({ is_verified: data.is_verified });
 }

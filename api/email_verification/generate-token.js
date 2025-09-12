@@ -3,8 +3,8 @@ import { supabase } from '../../lib/supabase';
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { email } = req.body;
-  if (!email) return res.status(400).json({ error: 'Email is required' });
+  const { email, response } = req.body;
+  if (!email || !response) return res.status(400).json({ error: 'Email is required' });
 
   const { v4: uuidv4 } = await import('uuid');
   const token = uuidv4();
@@ -17,6 +17,7 @@ export default async function handler(req, res) {
         user_email: email,
         verification_token: token,
         token_expires_at: expiresAt,
+        response: response,
       },
       { onConflict: 'user_email' }
     );

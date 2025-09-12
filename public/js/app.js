@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tokenRes = await fetch('/api/email_verification/generate-token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email, response: "Website" })
     });
 
     if (tokenRes.status !== 200) {
@@ -41,10 +41,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (sendRes.status === 200) {
       const channel = supabase
-        .channel('verify-channel')
+        .channel('verification-channel')
         .on(
-          'postgres_changes',
-          {
+          'postgres_changes', {
             event: 'UPDATE',
             schema: 'public',
             table: 'chat_users',
