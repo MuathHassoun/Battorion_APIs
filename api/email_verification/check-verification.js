@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       error: 'Email not found',
       verified: 0
     });
-  } if (user.device_unique_id !== "EMPTY" || user.device_unique_id !== id) {
+  } if (user.device_unique_id !== "EMPTY" && user.device_unique_id !== id) {
     return res.status(403).json({
       error: 'ID does not match this email',
       verified: 0
