@@ -24,6 +24,8 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "nodemailer": "^7.0.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "uuid": "^13.0.0"
   }
 }
