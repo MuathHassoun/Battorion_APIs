@@ -32,3 +32,22 @@ function redirectWithError(errorMessage) {
   window.location.href =
     `https://battorion-website.vercel.app/html/verification-failure.html?error=${encodeURIComponent(errorMessage)}`;
 }
+
+async function checkVerifyEmail() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const email = urlParams.get('email');
+  try {
+    const checkRes = await fetch('/api/email_verification/verification-channel', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email})
+    });
+
+    if (checkRes.status === 200) {
+      window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+    }
+  } catch (err) {
+    window.location.href =
+      `https://battorion-website.vercel.app/html/verification-failure.html?error=${encodeURIComponent(errorMessage)}`;
+  }
+}

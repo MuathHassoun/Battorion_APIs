@@ -42,9 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify({ email, id: "EMPTY" })
       });
 
-      alert("Message -");
       if (sendRes.status === 200) {
-        alert("Message 0");
         const channel = supabase
           .channel('verification-channel')
           .on(
@@ -56,7 +54,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
             async (payload) => {
               if (payload.new.is_web_verified) {
-                alert("Message 1");
                 try {
                   await fetch('/api/email_verification/verification-channel', {
                     method: 'POST',
@@ -76,7 +73,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           supabase.removeChannel(channel);
         });
       } else {
-        alert("Message 2");
         let sendError;
         try {
           sendError = await sendRes.json();
@@ -86,7 +82,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         errorMessage = `email_sending_failed_${sendRes.status}:${sendError.errored || sendError.message || "unknown_error"}`;
         redirectWithError(errorMessage);
       }
-      alert("Message +");
     } catch (error) {
       errorMessage = `network_or_server_error: ${encodeURIComponent(error.message)}`;
       redirectWithError(errorMessage);
