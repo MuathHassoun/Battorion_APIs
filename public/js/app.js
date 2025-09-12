@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           supabase.removeChannel(channel);
         });
       } else {
+        alert("Message 2");
         let sendError;
         try {
           sendError = await sendRes.json();
