@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (document.cookie.includes("is_web_verified=true")) {
     window.location.href = 'https://battorion-website.vercel.app/' + (
       localStorage.getItem('chatting') === "true"
-        ? ''
+        ? '?verified_email=' + email
         : 'html/verification-success.html'
     );
   } else {
@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
             async (payload) => {
               if (payload.new.is_web_verified) {
-                localStorage.setItem('userEmail', payload.new.email);
                 try {
                   await fetch('/api/email_verification/verification-channel', {
                     method: 'POST',
@@ -68,14 +67,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 } catch (err) {
                   window.location.href = 'https://battorion-website.vercel.app/' + (
                     localStorage.getItem('chatting') === "true"
-                      ? ''
+                      ? '?verified_email=' + email
                       : 'html/verification-success.html'
                   );
                 }
 
                 window.location.href = 'https://battorion-website.vercel.app/' + (
                   localStorage.getItem('chatting') === "true"
-                    ? ''
+                    ? '?verified_email=' + email
                     : 'html/verification-success.html'
                 );
               }

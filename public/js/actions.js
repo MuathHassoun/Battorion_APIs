@@ -44,10 +44,9 @@ async function checkVerifyEmail() {
     });
 
     if (checkRes.status === 200) {
-      localStorage.setItem('userEmail', email);
       window.location.href = 'https://battorion-website.vercel.app/' + (
         localStorage.getItem('chatting') === "true"
-          ? ''
+          ? '?verified_email=' + email
           : 'html/verification-success.html'
       );
     }
