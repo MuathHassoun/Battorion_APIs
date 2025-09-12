@@ -45,7 +45,11 @@ async function checkVerifyEmail() {
 
     if (checkRes.status === 200) {
       localStorage.setItem('userEmail', email);
-      window.location.href = 'https://battorion-website.vercel.app/' + (localStorage.getItem('chatting') === "true")? '' : 'html/verification-success.html';
+      window.location.href = 'https://battorion-website.vercel.app/' + (
+        localStorage.getItem('chatting') === "true"
+          ? ''
+          : 'html/verification-success.html'
+      );
     }
   } catch (err) {
     window.location.href =
