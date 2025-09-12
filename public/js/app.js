@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     if (sendRes.status === 200) {
-      const { startEmailWatcher } = await import('/js/channel.js');
+      const { startEmailWatcher } = await import('./channel.js');
       startEmailWatcher(email);
     } else {
       let sendError;
