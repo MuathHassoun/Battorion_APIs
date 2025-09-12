@@ -48,6 +48,6 @@ async function checkVerifyEmail() {
     }
   } catch (err) {
     window.location.href =
-      `https://battorion-website.vercel.app/html/verification-failure.html?error=${encodeURIComponent(errorMessage)}`;
+      `https://battorion-website.vercel.app/html/verification-failure.html?error=${encodeURIComponent(err.message)}`;
   }
 }
