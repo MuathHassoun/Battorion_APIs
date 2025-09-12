@@ -14,66 +14,78 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  try {
-    const tokenRes = await fetch('/api/email_verification/generate-token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, response: "Website" })
-    });
-
-    if (tokenRes.status !== 200) {
-      let tokenError;
-      try {
-        tokenError = await tokenRes.json();
-      } catch {
-        tokenError = {};
-      }
-      errorMessage = `token_generation_failed_${tokenRes.status}:${tokenError.message || "unknown_error"}`;
-      redirectWithError(errorMessage);
-      return;
-    }
-
-    const sendRes = await fetch('/api/email_verification/send-verification-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, id: "EMPTY" })
-    });
-
-    if (sendRes.status === 200) {
-      const channel = supabase
-        .channel('verification-channel')
-        .on(
-          'postgres_changes', {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'chat_users',
-            filter: `user_email=eq.${email}`,
-          },
-          (payload) => {
-            if (payload.new.is_verified) {
-              window.location.href =
-                'https://battorion-website.vercel.app/html/verification-success.html';
-            }
-          }
-        )
-        .subscribe();
-
-      window.addEventListener('beforeunload', () => {
-        supabase.removeChannel(channel);
+  if (document.cookie.includes("is_web_verified=true")) {
+    window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+  } else {
+    try {
+      const tokenRes = await fetch('/api/email_verification/generate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, response: "Website" })
       });
-    } else {
-      let sendError;
-      try {
-        sendError = await sendRes.json();
-      } catch {
-        sendError = {};
+
+      if (tokenRes.status !== 200) {
+        let tokenError;
+        try {
+          tokenError = await tokenRes.json();
+        } catch {
+          tokenError = {};
+        }
+        errorMessage = `token_generation_failed_${tokenRes.status}:${tokenError.message || "unknown_error"}`;
+        redirectWithError(errorMessage);
+        return;
       }
-      errorMessage = `email_sending_failed_${sendRes.status}:${sendError.errored || sendError.message || "unknown_error"}`;
+
+      const sendRes = await fetch('/api/email_verification/send-verification-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, id: "EMPTY" })
+      });
+
+      if (sendRes.status === 200) {
+        const channel = supabase
+          .channel('verification-channel')
+          .on(
+            'postgres_changes', {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'chat_users',
+              filter: `user_email=eq.${email.toLowerCase().trim()}`
+            },
+            async (payload) => {
+              if (payload.new.is_web_verified) {
+                try {
+                  await fetch('/api/email_verification/verification-channel', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email })
+                  });
+                } catch (err) {
+                  window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+                }
+                window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+              }
+            }
+          )
+          .subscribe();
+
+        window.addEventListener('beforeunload', () => {
+          supabase.removeChannel(channel);
+        });
+      } else {
+        let sendError;
+        try {
+          sendError = await sendRes.json();
+        } catch {
+          sendError = {};
+        }
+        errorMessage = `email_sending_failed_${sendRes.status}:${sendError.errored || sendError.message || "unknown_error"}`;
+        redirectWithError(errorMessage);
+      }
+    } catch (error) {
+      errorMessage = `network_or_server_error: ${encodeURIComponent(error.message)}`;
       redirectWithError(errorMessage);
     }
-  } catch (error) {
-    errorMessage = `network_or_server_error: ${encodeURIComponent(error.message)}`;
-    redirectWithError(errorMessage);
   }
 });
 

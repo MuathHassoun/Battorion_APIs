@@ -12,10 +12,19 @@ export default async function handler(req, res) {
 
   const { data, error } = await supabase
     .from('chat_users')
-    .select('is_verified')
+    .select('is_web_verified')
     .eq('user_email', email)
     .single();
 
-  if (error) return res.status(500).json({ error: 'Database error', details: error.message });
-  return res.status(200).json({ is_verified: data.is_verified });
+  if (error) {
+    return res.status(500).json({ error: 'Database error', details: error.message });
+  }
+
+  const { error: updateError } = await supabase
+    .from('chat_users')
+    .update({ is_web_verified: null })
+    .eq('user_email', email)
+
+  if (updateError) return res.status(500).json({ error: 'Update error', details: updateError.message });
+  return res.status(200).json({ is_verified: data.is_web_verified });
 }

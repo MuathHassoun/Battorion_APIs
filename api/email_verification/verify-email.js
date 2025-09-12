@@ -2,7 +2,6 @@ import { supabase } from '../../lib/supabase';
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).send('Method not allowed');
-
   const { id, token, email } = req.query;
   if (!token || !email || (!id && id !== "EMPTY")) {
     return res.status(400).send('Missing id, token, or email');
@@ -24,12 +23,13 @@ export default async function handler(req, res) {
       .from('chat_users')
       .update({
         response: null,
-        is_verified: true,
+        is_web_verified: true,
         verification_token: null,
         token_expires_at: null
       })
       .eq('user_email', email);
     updateError = error;
+    res.setHeader('Set-Cookie', 'is_web_verified=true; Path=/; Max-Age=31536000; SameSite=Strict');
   } else {
     const { error } = await supabase
       .from('chat_users')
