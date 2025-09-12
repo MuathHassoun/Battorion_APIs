@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
             async (payload) => {
               if (payload.new.is_web_verified) {
+                localStorage.setItem('userEmail', payload.new.email);
                 try {
                   await fetch('/api/email_verification/verification-channel', {
                     method: 'POST',
@@ -61,9 +62,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     body: JSON.stringify({ email })
                   });
                 } catch (err) {
-                  window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+                  window.location.href = 'https://battorion-website.vercel.app/' + (localStorage.getItem('chatting') === "true")? '' : 'html/verification-success.html';
                 }
-                window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+                window.location.href = 'https://battorion-website.vercel.app/' + (localStorage.getItem('chatting') === "true")? '' : 'html/verification-success.html';
               }
             }
           )

@@ -53,6 +53,9 @@
     } else {
       emailHeading.textContent = "No email provided.";
     }
+
+    const chatting = urlParams.get('chatting');
+    localStorage.setItem('chatting', chatting);
   </script>
   <script src="js/app.js"></script>
   <script src="js/actions.js"></script>

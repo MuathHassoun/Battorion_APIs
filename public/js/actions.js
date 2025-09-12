@@ -44,7 +44,8 @@ async function checkVerifyEmail() {
     });
 
     if (checkRes.status === 200) {
-      window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
+      localStorage.setItem('userEmail', email);
+      window.location.href = 'https://battorion-website.vercel.app/' + (localStorage.getItem('chatting') === "true")? '' : 'html/verification-success.html';
     }
   } catch (err) {
     window.location.href =
