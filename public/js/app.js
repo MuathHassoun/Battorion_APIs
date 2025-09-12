@@ -1,3 +1,5 @@
+import {supabase} from "../../lib/supabase";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const emailElement = document.getElementById("email_address");
   let email = emailElement?.value || "";
@@ -39,8 +41,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (sendRes.status === 200) {
       // const { startEmailWatcher } = await import('https://battorion-ap-is.vercel.app/js/channel.js');
-      const { startEmailWatcher } = await import('./channel.js');
-      startEmailWatcher(email);
+      // await import('./channel.js');
+      const channel = supabase
+        .channel('verify-channel')
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'chat_users',
+            filter: `user_email=eq.${email}`,
+          },
+          (payload) => {
+            if (payload.new.is_verified) {
+              window.location.href =
+                'https://battorion-website.vercel.app/html/verification-success.html';
+            }
+          }
+        )
+        .subscribe();
+
+      window.addEventListener('beforeunload', () => {
+        supabase.removeChannel(channel);
+      });
     } else {
       let sendError;
       try {
