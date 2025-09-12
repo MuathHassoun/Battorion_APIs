@@ -1,10 +1,14 @@
-window.addEventListener("load", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const emailElement = document.getElementById("email_address");
-  const email = emailElement.value;
+  let email = emailElement.value;
   if (!isValidEmail(email)) {
-    alert("Message 0");
-    window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
-    return;
+    const params = new URLSearchParams(window.location.search);
+    email = params.get("email");
+    if (!isValidEmail(email)) {
+      alert("Message 0");
+      window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
+      return;
+    }
   }
 
   try {
