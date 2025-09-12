@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     if (sendRes.status === 200) {
-      await import('public/js/channel.js');
+      await import('./channel.js');
     } else {
       let sendError;
       try {
