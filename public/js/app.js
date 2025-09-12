@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (res.status === 200) {
+        alert("Message sent successfully");
         await import('public/js/channel.js');
       } else {
         window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
