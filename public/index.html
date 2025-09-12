@@ -24,10 +24,18 @@
       We've sent a verification link to your email address.<br>
       Please check your Gmail inbox and click the link to continue.
     </p>
+    <p>
+      Note: It may take a few minutes for the email to arrive.
+    </p>
 
-    <a href="https://mail.google.com" target="_blank" class="btn">
-      Open Gmail
-    </a>
+    <section id="actions">
+      <a href="https://mail.google.com" target="_blank" class="btn">
+        Open Gmail
+      </a>
+      <button onclick="resendEmail()" class="btn">
+        Resend Email
+      </button>
+    </section>
   </div>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -40,5 +48,6 @@
     }
   </script>
   <script src="js/app.js"></script>
+  <script src="js/actions.js"></script>
 </body>
 </html>

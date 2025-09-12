@@ -40,8 +40,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     if (sendRes.status === 200) {
-      // const { startEmailWatcher } = await import('https://battorion-ap-is.vercel.app/js/channel.js');
-      // await import('./channel.js');
       const channel = supabase
         .channel('verify-channel')
         .on(
