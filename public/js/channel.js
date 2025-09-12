@@ -1,4 +1,4 @@
-import { supabase } from 'lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { useEffect } from 'react';
 
 export default function EmailVerificationWatcher({ email }) {
@@ -17,8 +17,7 @@ export default function EmailVerificationWatcher({ email }) {
         },
         (payload) => {
           if (payload.new.is_verified) {
-            window.location.href =
-              'https://battorion-website.vercel.app/html/verification-success.html';
+            window.location.href = 'https://battorion-website.vercel.app/html/verification-success.html';
           }
         }
       )
