@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const emailElement = document.getElementById("email_address");
-  let email = emailElement.value;
+  let email = emailElement?.value || "";
   let errorMessage = "";
 
   if (!isValidEmail(email)) {
@@ -16,11 +16,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const tokenRes = await fetch('/api/email_verification/generate-token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
+      body: JSON.stringify({ email })
     });
 
     if (tokenRes.status !== 200) {
-      errorMessage = `token_generation_failed_${tokenRes.status}`;
+      let tokenError;
+      try {
+        tokenError = await tokenRes.json();
+      } catch {
+        tokenError = {};
+      }
+      errorMessage = `token_generation_failed_${tokenRes.status}:${tokenError.message || "unknown_error"}`;
       redirectWithError(errorMessage);
       return;
     }
@@ -28,17 +34,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const sendRes = await fetch('/api/email_verification/send-verification-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, id: "EMPTY" })
+      body: JSON.stringify({ email, id: "EMPTY" })
     });
 
     if (sendRes.status === 200) {
       await import('public/js/channel.js');
-    }  else {
-      errorMessage = `email_sending_failed_${sendRes.status}`;
+    } else {
+      let sendError;
+      try {
+        sendError = await sendRes.json();
+      } catch {
+        sendError = {};
+      }
+      errorMessage = `email_sending_failed_${sendRes.status}:${sendError.errored || sendError.message || "unknown_error"}`;
       redirectWithError(errorMessage);
     }
   } catch (error) {
-    errorMessage = `network_or_server_error:${encodeURIComponent(error.message)}`;
+    errorMessage = `network_or_server_error: ${encodeURIComponent(error.message)}`;
     redirectWithError(errorMessage);
   }
 });
@@ -50,5 +62,5 @@ function isValidEmail(email) {
 
 function redirectWithError(errorMessage) {
   window.location.href =
-    `https://battorion-website.vercel.app/html/verification-failure.html?error=${errorMessage}`;
+    `https://battorion-website.vercel.app/html/verification-failure.html?error=${encodeURIComponent(errorMessage)}`;
 }
