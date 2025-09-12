@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
+    alert("Message 1");
     const res = await fetch('/api/email_verification/generate-token', {
       method: 'POST',
       headers: {
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     if(res.status === 200) {
+      alert("Message 2");
       const res = await fetch('/api/email_verification/send-verification-email', {
         method: 'POST',
         headers: {
@@ -28,15 +30,18 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (res.status === 200) {
-        alert("Message sent successfully");
+        alert("Message 3");
         await import('public/js/channel.js');
       } else {
+        alert("Message 4");
         window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
       }
     } else {
+      alert("Message 5");
       window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
     }
   } catch (error) {
+    alert("Message 6");
     window.location.href = "https://battorion-website.vercel.app/html/verification-failure.html";
   }
 });
