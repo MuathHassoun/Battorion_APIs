@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify({ email, id: "EMPTY" })
       });
 
+      alert("Message -");
       if (sendRes.status === 200) {
         alert("Message 0");
         const channel = supabase
