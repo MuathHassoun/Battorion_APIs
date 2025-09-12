@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
             async (payload) => {
               if (payload.new.is_web_verified) {
+                alert("Message 1");
                 try {
                   await fetch('/api/email_verification/verification-channel', {
                     method: 'POST',
@@ -82,6 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         errorMessage = `email_sending_failed_${sendRes.status}:${sendError.errored || sendError.message || "unknown_error"}`;
         redirectWithError(errorMessage);
       }
+      alert("Message +");
     } catch (error) {
       errorMessage = `network_or_server_error: ${encodeURIComponent(error.message)}`;
       redirectWithError(errorMessage);
